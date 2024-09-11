@@ -18,34 +18,52 @@ const styles = theme => ({
 
 }) 
 
-const customers = [
-  {
-    'id': 1,
-    'image': 'https://placeimg.com/64/64/any',
-    'name': 'John Doe',
-    'birtday': '1990-01-01',
-    'gender': 'Male',
-    'job': 'Engineer'
-  },
-  {
-    'id': 2,
-    'image': 'https://placeimg.com/66/65/2',
-    'name': 'wooyonghak',
-    'birtday': '1976-03-21',
-    'gender': 'girl',
-    'job': '자영업자'
-  },
-  {
-    'id': 3,
-    'image': 'https://placeimg.com/66/65/3',
-    'name': 'kimheesun',
-    'birtday': '1977-07-07',
-    'gender': 'girl',
-    'job': '자영업자222'
-  }
-];
+// const customers = [
+//   {
+//     'id': 1,
+//     'image': 'https://placeimg.com/64/64/any',
+//     'name': 'John Doe',
+//     'birtday': '1990-01-01',
+//     'gender': 'Male',
+//     'job': 'Engineer'
+//   },
+//   {
+//     'id': 2,
+//     'image': 'https://placeimg.com/66/65/2',
+//     'name': 'wooyonghak',
+//     'birtday': '1976-03-21',
+//     'gender': 'girl',
+//     'job': '자영업자'
+//   },
+//   {
+//     'id': 3,
+//     'image': 'https://placeimg.com/66/65/3',
+//     'name': 'kimheesun',
+//     'birtday': '1977-07-07',
+//     'gender': 'girl',
+//     'job': '자영업자222'
+//   }
+// ];
 
 class App extends Component {
+
+  state ={
+    customers :""
+  }
+  componentDidMount(){
+    
+    this.timer = setInterval(this.progress, 20);
+    this.callApi()
+      .then(res => this.setState({customers: res}))
+      .catch(err => console.log(err));
+  } 
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
   render() {
     const {classes} =this.props; 
     return (
@@ -62,8 +80,8 @@ class App extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              customers.map(c => {  
+            { 
+              this.state.customers ? this.state.customers.map(c => {  
                 return(
                 <Customer
                   key={c.id}
@@ -75,7 +93,7 @@ class App extends Component {
                   job={c.job}
                 />
                 )
-              })
+              }) : ""
             }
           </TableBody>
         </Table>
