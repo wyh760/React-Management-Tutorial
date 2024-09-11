@@ -48,8 +48,10 @@ class App extends Component {
   callApi = async () => {
     const response = await fetch('/api/customers');
     const body = await response.json();
+    console.log(body);  // 데이터를 출력하여 확인
     return body;
   }
+  
 
   render() {
     const {classes} =this.props; 
@@ -74,7 +76,7 @@ class App extends Component {
                   key={c.id}
                   id={c.id}
                   image={c.image}
-                  name={c.name}
+                  name={c.NAME || c.name}  // 데이터베이스 필드명에 따라 조건부로 사용
                   birtday={c.birtday}
                   gender={c.gender}
                   job={c.job}
