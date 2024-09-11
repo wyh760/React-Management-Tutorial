@@ -3,6 +3,7 @@ import Customer from './component/Customer';
 import './App.css';
 import { Table, TableHead, TableBody, TableRow, TableCell, Paper } from '@mui/material';
 import { withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 
 
@@ -14,49 +15,35 @@ const styles = theme => ({
   },
   table:{
     minWidth: 1080
-  }
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
+  },
 
 }) 
 
-// const customers = [
-//   {
-//     'id': 1,
-//     'image': 'https://placeimg.com/64/64/any',
-//     'name': 'John Doe',
-//     'birtday': '1990-01-01',
-//     'gender': 'Male',
-//     'job': 'Engineer'
-//   },
-//   {
-//     'id': 2,
-//     'image': 'https://placeimg.com/66/65/2',
-//     'name': 'wooyonghak',
-//     'birtday': '1976-03-21',
-//     'gender': 'girl',
-//     'job': '자영업자'
-//   },
-//   {
-//     'id': 3,
-//     'image': 'https://placeimg.com/66/65/3',
-//     'name': 'kimheesun',
-//     'birtday': '1977-07-07',
-//     'gender': 'girl',
-//     'job': '자영업자222'
-//   }
-// ];
 
 class App extends Component {
 
   state ={
-    customers :""
+      customers: '',
+      completed: 0,
+      searchKeyword: ''
   }
+
   componentDidMount(){
     
     this.timer = setInterval(this.progress, 20);
+
     this.callApi()
       .then(res => this.setState({customers: res}))
       .catch(err => console.log(err));
   } 
+
+  progress = () => {
+    const { completed } = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1});
+  }
 
   callApi = async () => {
     const response = await fetch('/api/customers');
@@ -93,7 +80,12 @@ class App extends Component {
                   job={c.job}
                 />
                 )
-              }) : ""
+              }) : 
+              <TableRow>
+              <TableCell colSpan="6" align="center">
+                <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+              </TableCell>
+            </TableRow>
             }
           </TableBody>
         </Table>

@@ -40,6 +40,14 @@ app.get('/api/customers', (req, res) => {
             'birtday': '1977-09-09',
             'gender': '남자',
             'job': '가수'
+          },
+          {
+            'id': 5,
+            'image': 'https://placeimg.com/65/65/5',
+            'name': 'park chan ho',
+            'birtday': '1980-09-09',
+            'gender': '남자',
+            'job': '야구선수'
           }
     ]);
 
